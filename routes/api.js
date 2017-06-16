@@ -1,54 +1,44 @@
 const express = require('express');
 const router = express.Router();
-const Ninja = require('../models/ninja');
+const Recipe = require('../models/recipe');
 
-router.get('/ninjas', function(req, res, next) {
-	/*
-	 Ninja.find({}).then(function(ninjas) {
-	 res.send(ninjas);
+router.get('/recipes', function(req, res, next) {
+
+	 Recipe.find({})
+	 .then(function(recipes) {
+	 res.send(recipes);
 	 })
-	 */
-	console.log(req.query);
-	Ninja.geoNear({
-			type: 'Point',
-			coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]
-		},
-		{ maxDistance: 100000, spherical: true })
-		.then(function(ninjas) {
-			res.send(ninjas);
-		})
 })
 
-router.post('/ninjas', function(req, res, next) {
+router.post('/recipes', function(req, res, next) {
 
-	Ninja.create(req.body)
-		.then(function(ninja) {
-			res.send(ninja)
+	Recipe.create(req.body)
+		.then(function(recipe) {
+			res.send(recipe)
 		})
-		.catch(next);
 	// var ninja = new Ninja(req.body);
 	// ninja.save();
 
 });
 
-router.put('/ninjas/:id', function(req, res, next) {
-	Ninja.findByIdAndUpdate({ _id: req.params.id }, req.body)
-		.then(function() {
-			Ninja.find(function(err, ninja) {
-				if (err) return console.error(err);
-				res.send(ninja);
-			})
-		})
-		.catch(next);
-})
+// router.put('/ninjas/:id', function(req, res, next) {
+// 	Ninja.findByIdAndUpdate({ _id: req.params.id }, req.body)
+// 		.then(function() {
+// 			Ninja.find(function(err, ninja) {
+// 				if (err) return console.error(err);
+// 				res.send(ninja);
+// 			})
+// 		})
+// 		.catch(next);
+// })
 
-router.delete('/ninjas/:id', function(req, res, next) {
+// router.delete('/ninjas/:id', function(req, res, next) {
 
-	Ninja.findByIdAndRemove({ _id: req.params.id })
-		.then(function(ninja) {
-			res.send(ninja);
-		})
-		.catch(next);
-})
+// 	Ninja.findByIdAndRemove({ _id: req.params.id })
+// 		.then(function(ninja) {
+// 			res.send(ninja);
+// 		})
+// 		.catch(next);
+// })
 
 module.exports = router;
